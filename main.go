@@ -7,7 +7,9 @@ import (
 )
 
 func main() {
-	go subscriber.Subscribe()
+	ready := make(chan struct{})
+
+	go subscriber.Subscribe(ready)
 	time.Sleep(time.Second)
 	go publisher.Publisher()
 

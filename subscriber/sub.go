@@ -6,7 +6,7 @@ import (
 	"github.com/nats-io/nats.go"
 )
 
-func Subscribe() {
+func Subscribe(ready chan<- struct{}) {
 	nc, err := nats.Connect(nats.DefaultURL)
 	if err != nil {
 		panic(err)
@@ -22,5 +22,9 @@ func Subscribe() {
 	if err != nil {
 		panic(err)
 	}
+
+	close(ready)
+
 	fmt.Println("Listening [updates] subject ...")
+	select {}
 }
