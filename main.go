@@ -8,7 +8,7 @@ import (
 
 func main() {
 	go subscriber.Subscribe()
-	time.Sleep(500 * time.Millisecond)
+	time.Sleep(time.Second)
 	go publisher.Publisher()
 
 	select {}

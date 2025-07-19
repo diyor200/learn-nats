@@ -12,7 +12,7 @@ func Subscribe() {
 		panic(err)
 	}
 
-	fmt.Println("publisher connected ...")
+	fmt.Println("subscriber connected ...")
 
 	defer nc.Close()
 
@@ -22,5 +22,5 @@ func Subscribe() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("Listening [updates] subhect ...")
+	fmt.Println("Listening [updates] subject ...")
 }
