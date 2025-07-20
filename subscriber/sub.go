@@ -16,11 +16,14 @@ func Subscribe(ready chan<- struct{}) {
 
 	defer nc.Close()
 
-	_, err = nc.Subscribe("updates", func(msg *nats.Msg) {
-		fmt.Printf("Received message from nats: %s\n", string(msg.Data))
-	})
-	if err != nil {
-		panic(err)
+	// subscribers
+	for i := range 5 {
+		_, err = nc.QueueSubscribe("updates", "test.queue", func(msg *nats.Msg) {
+			fmt.Printf("worker%d received: %s\n", i, string(msg.Data))
+		})
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	close(ready)
