@@ -19,11 +19,11 @@ func Publisher() {
 	for {
 		time.Sleep(time.Millisecond * 300)
 
-		err = nc.Publish("updates", []byte("hello world"))
+		msg, err := nc.Request("req-reply", []byte("hello world"), time.Second)
 		if err != nil {
 			panic(err)
 		}
 
-		fmt.Println("message published!")
+		fmt.Println("message published! Got reply: ", string(msg.Data))
 	}
 }

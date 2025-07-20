@@ -2,15 +2,14 @@ package main
 
 import (
 	"learn-nats/publisher"
-	"learn-nats/subscriber"
+	"learn-nats/replier"
 	"time"
 )
 
 func main() {
-	ready := make(chan struct{})
-
-	go subscriber.Subscribe(ready)
+	go replier.Reply()
 	time.Sleep(time.Second)
+
 	go publisher.Publisher()
 
 	select {}
