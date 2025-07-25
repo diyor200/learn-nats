@@ -16,14 +16,32 @@ func Publisher() {
 
 	fmt.Println("publisher connected ...")
 
-	for {
-		time.Sleep(time.Millisecond * 300)
+	js, err := nc.JetStream()
+	if err != nil {
+		panic(err)
+	}
 
-		err = nc.Publish("updates", []byte("hello world"))
+	_, err = js.AddStream(&nats.StreamConfig{
+		Name:     "EVENTS",
+		Subjects: []string{"oreders.*"},
+	})
+	if err != nil && err != nats.ErrStreamNameAlreadyInUse {
+		panic(err)
+	}
+
+	for i := 0; ; i++ {
+		time.Sleep(300 * time.Millisecond)
+
+		msg := fmt.Sprintf("Order ID: %d", i)
+		_, err = js.Publish("orders.created", []byte(msg))
 		if err != nil {
 			panic(err)
 		}
 
-		fmt.Println("message published!")
+		msg = fmt.Sprintf("Cancelled order ID: %d", i)
+		_, err = js.Publish("orders.cancelled", []byte(msg))
+		if err != nil {
+			panic(err)
+		}
 	}
 }

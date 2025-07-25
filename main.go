@@ -8,8 +8,10 @@ import (
 
 func main() {
 	ready := make(chan struct{})
+	ready2 := make(chan struct{})
 
-	go subscriber.Subscribe(ready)
+	go subscriber.Subscriber(ready)
+	go subscriber.Subscriber2(ready2)
 	time.Sleep(time.Second)
 	go publisher.Publisher()
 
